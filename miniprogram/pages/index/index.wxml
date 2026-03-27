@@ -1,125 +1,149 @@
-<view>
-  <view class="title">
-    Agent-UI
-  </view>
-  <view class="sub-title">
-    极简，原生态
-  </view>
-  <view class="sub-title">
-    组件化ChatBot对话组件
-  </view>
-  <view class="btn-box">
-    <view class="btn-fill" data-anchor="anchor1" bind:tap="scrollToAnchor">开始使用</view>
-    <view class="btn-light" data-anchor="anchor2" bind:tap="scrollToAnchor">组件文档</view>
-  </view>
-  <block wx:for="{{introduction}}" wx:key="title">
-    <view class="introduction-box">
-      <view class="introduction-title">{{item.title}}</view>
-      <view class="introduction-desc">{{item.desc}}</view>
+<view class="page">
+  <!-- 顶部安全区 -->
+  <view style="height: {{statusBarHeight}}px;"></view>
+
+  <!-- 红色光晕装饰 -->
+  <view class="glow-orb"></view>
+
+  <!-- 顶部品牌区 -->
+  <view class="brand">
+    <view class="brand-row">
+      <view class="brand-logo">🔍</view>
+      <text class="brand-name">人话翻译机</text>
     </view>
-  </block>
-  <view class="title-h1" id="anchor1">快速开始</view>
-  <view class="step-text" style="padding: 16px;">
-    Agent-UI 组件用于对接腾讯云开发AI能力，支持Agnet(智能体)、大模型流式对话。使用腾讯云开发AI能力，需要先开通云开发环境（<text style="color: #1aad19;" bind:tap="copyUrl">去开通</text>），如何迁移到已有项目参见“集成到已有小程序中”
-  </view>
-  <view class="function-box">
-    <view class="function-box-title" bind:tap="expandModel">
-      <text>对接腾讯云开发大模型</text>
-      <image src="../../imgs/arrow.png" mode="widthFix" style="width: 16px;height: 16px;transform-origin: center center;transform: rotate({{modelExpand?90:0}}deg);" />
-    </view>
-    <view wx:if="{{modelExpand}}">
-      <view class="model"> <text style="color: #1aad19;">一、使用deepseek大模型</text> </view>
-      <view class="step-title"><text class="step-left">step</text> <text class="step-right">1 </text>配置环境ID</view>
-      <view class="step-text">
-        前往 miniprogram/app.js 文件配置环境ID
-      </view>
-      <view class="code_zone">
-        <rich-text nodes="<pre style='overflow: scroll;'>{{agentUiConfig.initEnvID}}</pre>" />
-      </view>
-      <view class="step-title"><text class="step-left">step</text> <text class="step-right">2</text>修改组件配置</view>
-      <view class="step-text">
-        前往 chatBot/chatBot.js 文件配置 agent-ui 组件参数。chatMode , modelConfig.modelProvider , modelConfig.quickResponseModel 必填, chatMode 固定为 "model" , modelConfig.modelProvider 为大模型服务商 , modelConfig.quickResponseModel 为具体使用的模型版本。 deepseek 目前支持 v3 和 r1 , modelConfig.quickResponseModel 可填 "deepseek-r1" 或者 "deepseek-v3"
-      </view>
-      <view class="code_zone">
-        <rich-text nodes="<pre style='overflow: scroll;'>{{agentUiConfig.modelConfig2}}</pre>" />
-      </view>
-      <view class="btn-full" bind:tap="goChatBot">我已配置，去体验</view>
-      <view class="model"> <text style="color: #1aad19;">二、使用混元大模型</text> </view>
-      <view class="step-title"><text class="step-left">step</text> <text class="step-right">1</text> 配置环境ID</view>
-      <view class="step-text">
-        前往 miniprogram/app.js 文件配置环境ID
-      </view>
-      <view class="code_zone">
-        <rich-text nodes="<pre style='overflow: scroll;'>{{agentUiConfig.initEnvID}}</pre>" />
-      </view>
-      <view class="step-title"><text class="step-left">step</text> <text class="step-right">2</text> 修改组件配置</view>
-      <view class="step-text">
-        前往 chatBot/chatBot.js 文件配置 agent-ui 组件参数。chatMode , modelConfig.modelProvider , modelConfig.quickResponseModel 必填, chatMode 固定为 "model" , modelConfig.modelProvider 为大模型服务商 , modelConfig.quickResponseModel 为具体使用的模型版本
-      </view>
-      <view class="code_zone">
-        <rich-text nodes="<pre style='overflow: scroll;'>{{agentUiConfig.modelConfig1}}</pre>" />
-      </view>
-      <view class="btn-full" bind:tap="goChatBot">我已配置，去体验</view>
-    </view>
-  </view>
-  <view class="function-box">
-    <view class="function-box-title" bind:tap="expandAgent">
-      <text>对接腾讯云开发Agent</text>
-      <image src="../../imgs/arrow.png" mode="widthFix" style="width: 16px;height: 16px;transform-origin: center center;transform: rotate({{agentExpand?90:0}}deg);" />
-    </view>
-    <block wx:if="{{agentExpand}}">
-      <view class="step-title"><text class="step-left">step</text> <text class="step-right">1</text> 配置环境ID</view>
-      <view class="step-text">
-        前往 miniprogram/app.js 文件配置环境ID
-      </view>
-      <view class="code_zone">
-        <rich-text nodes="<pre style='overflow: scroll;'>{{agentUiConfig.initEnvID}}</pre>" />
-      </view>
-      <view class="step-title"><text class="step-left">step</text> <text class="step-right">2</text> 修改组件配置</view>
-      <view class="step-text">
-        前往 chatBot/chatBot.js 文件配置 agent-ui 组件参数。chatMode 和 agentConfig.botId 必填, chatMode 固定为 "bot" , agentConfig.botId 为 agent id
-      </view>
-      <view class="code_zone">
-        <rich-text nodes="<pre style='overflow: scroll;'>{{agentUiConfig.agentConfig}}</pre>" />
-      </view>
-      <view class="btn-full" bind:tap="goChatBot">我已配置，去体验</view>
-    </block>
+    <text class="brand-slogan">粘贴话术，一键看穿真相</text>
   </view>
 
-  <view class="title-h1" id="anchor2">组件文档</view>
-  <view style="padding: 16px;">
-    <view style="color: #1aad19; font-size: 14px;margin-bottom: 16px;">参数说明</view>
-    <block wx:for="{{params}}" wx:key="name">
-      <view style="margin-bottom:16px;font-size: 14px;line-height: 24px;text-align: justify;">
-        <view> <text style="font-weight: 500;">字段：</text>{{item.name}}</view>
-        <view><text style="font-weight: 500;">类型：</text>{{item.type}}</view>
-        <view><text style="font-weight: 500;">说明：</text>{{item.desc}}</view>
+  <!-- 场景选择栏 -->
+  <scroll-view class="scene-scroll" scroll-x enable-flex>
+    <view class="scene-list">
+      <view
+        wx:for="{{scenes}}"
+        wx:key="id"
+        class="scene-pill {{currentScene === item.id ? (item.id === 'reverse' ? 'scene-pill--active-green' : 'scene-pill--active') : ''}}"
+        bind:tap="onSceneChange"
+        data-id="{{item.id}}"
+      >
+        {{item.icon}} {{item.label}}
       </view>
-    </block>
-  </view>
-  <view style="padding: 16px;">
-    <view style="color: #1aad19; font-size: 14px;margin-bottom: 16px;">文件上传说明</view>
-    <view style="margin-bottom:16px;font-size: 14px;line-height: 24px;text-align: justify;">
-      <view> <text style="font-weight: 500;">大小限制：</text>单文件不超过10M</view>
-      <view><text style="font-weight: 500;">数量限制：</text>单次最多支持 5 个文件</view>
-      <view><text style="font-weight: 500;">文件类型：</text> pdf、txt、doc、docx、ppt、pptx、xls、xlsx、csv</view>
-      <view><text style="font-weight: 500;">合法域名配置：</text>微信小程序上传文件需要添加“文件上传接口”到合法域名列表，文件上传域名为：https://{your-envid}.api.tcloudbasegateway.com, 可前往微信公众平台（https://mp.weixin.qq.com）配置合法域名</view>
+    </view>
+  </scroll-view>
+
+  <!-- 文本输入区 -->
+  <view class="input-card {{inputFocused ? 'input-card--focus' : ''}}">
+    <textarea
+      class="input-area"
+      value="{{inputText}}"
+      placeholder="{{currentPlaceholder}}"
+      placeholder-class="input-placeholder"
+      maxlength="500"
+      auto-height
+      bindinput="onInput"
+      bindfocus="onFocus"
+      bindblur="onBlur"
+    />
+    <view class="input-divider"></view>
+    <view class="input-toolbar">
+      <text class="char-count">{{inputText.length}}/500</text>
+      <view class="toolbar-btns">
+        <view class="paste-btn" bind:tap="onPaste">📋 粘贴</view>
+        <view
+          class="translate-btn {{!inputText || isLoading ? 'translate-btn--disabled' : ''}}"
+          bind:tap="onTranslate"
+        >
+          {{currentScene === 'reverse' ? '✨ 上妆' : '🔍 翻译人话'}}
+        </view>
+      </view>
     </view>
   </view>
-  <view style="padding: 16px;">
-    <view style="color: #1aad19; font-size: 14px;margin-bottom: 16px;">集成到已有小程序中</view>
-    <view class="step-text">1. 拷贝 miniprogram/components/agent-ui 组件到小程序中</view>
-    <view class="step-text">2. 在页面 .json 配置文件中注册组件 </view>
-    <view class="code_zone">
-      <rich-text nodes="<pre style='overflow: scroll;'>{{guide[0]}}</pre>" />
+
+  <!-- 加载态 -->
+  <view class="loading-box" wx:if="{{isLoading}}">
+    <text class="loading-main">{{currentScene === 'reverse' ? '✨ 正在疯狂上妆…' : '🔍 正在粉碎话术…'}}</text>
+    <text class="loading-sub">AI 正在扒开 {{loadingLayers}} 层包装</text>
+  </view>
+
+  <!-- 翻译结果区 -->
+  <view class="result-area {{showResult ? 'result-area--show' : ''}}" wx:if="{{result}}">
+
+    <!-- 妆感浓度仪表 -->
+    <view class="meter-card">
+      <view class="meter-content">
+        <view class="meter-left">
+          <text class="meter-label">💄 {{currentScene === 'reverse' ? '上妆浓度' : '妆感浓度'}}</text>
+          <view class="meter-track">
+            <view class="meter-fill" style="width: {{animatedScore}}%;"></view>
+          </view>
+          <view class="meter-scale">
+            <text>素颜</text>
+            <text>淡妆</text>
+            <text>浓妆</text>
+            <text>整容</text>
+          </view>
+        </view>
+        <view class="meter-right">
+          <view class="meter-score-row">
+            <text class="meter-score">{{result.score}}</text>
+            <text class="meter-percent">%</text>
+          </view>
+          <text class="meter-verdict">{{result.verdict}}</text>
+        </view>
+      </view>
     </view>
-    <view class="step-text">3. 在页面 .wxml 文件中使用组件 </view>
-    <view class="code_zone">
-      <rich-text nodes="<pre style='overflow: scroll;'>{{guide[1]}}</pre>" />
-    </view>
-    <view class="step-text">4. 在页面 .js 文件中编写配置 </view>
-    <view class="code_zone">
-      <rich-text nodes="<pre style='overflow: scroll;'>{{guide[2]}}</pre>" />
+
+    <!-- 翻译结果卡片 -->
+    <view class="result-card">
+      <!-- 原文 -->
+      <view class="result-section">
+        <view class="section-label">
+          <view class="dot dot--red"></view>
+          <text class="label-text label-text--red">{{currentScene === 'reverse' ? '原文 · 大白话' : '原文 · 话术版'}}</text>
+        </view>
+        <text class="original-text">{{inputText}}</text>
+      </view>
+
+      <!-- 人话翻译 -->
+      <view class="result-section result-section--green">
+        <view class="section-label">
+          <view class="dot dot--green"></view>
+          <text class="label-text label-text--green">{{currentScene === 'reverse' ? '上妆 · 高大上版' : '人话 · 真实含义'}}</text>
+        </view>
+        <text class="human-text">{{result.humanText}}</text>
+      </view>
+
+      <!-- 逐句拆解 -->
+      <view class="result-section">
+        <view class="section-label">
+          <text class="label-text label-text--gray">🔬 逐句拆解</text>
+        </view>
+        <view class="breakdown-list">
+          <view
+            class="breakdown-item"
+            wx:for="{{result.breakdown}}"
+            wx:key="index"
+          >
+            <text class="breakdown-from">{{item.from}}</text>
+            <text class="breakdown-arrow">→</text>
+            <text class="breakdown-to">{{item.to}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="action-bar">
+        <view class="action-btn action-btn--gray" bind:tap="onShare">
+          📤 分享
+        </view>
+        <view class="action-btn action-btn--gray" bind:tap="onCopy">
+          📋 复制
+        </view>
+        <view class="action-btn action-btn--primary" bind:tap="onRetranslate">
+          再译一条
+        </view>
+      </view>
     </view>
   </view>
+
+  <!-- 底部安全区 -->
+  <view style="height: 60rpx;"></view>
 </view>
